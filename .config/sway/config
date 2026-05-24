@@ -1,0 +1,301 @@
+# sway config — read `man 5 sway` for reference
+
+include catppuccin-mocha
+
+### Variables ────────────────────────────────────────────────────────────────
+set $mod   Mod4
+set $left  h
+set $down  j
+set $up    k
+set $right l
+set $term  kitty
+set $menu  fuzzel
+
+### Font (title bars, swaynag) ───────────────────────────────────────────────
+font pango:JetBrainsMono Nerd Font 10
+
+### Output ───────────────────────────────────────────────────────────────────
+# Replace with your wallpaper path, e.g.:
+#   output * bg ~/wallpapers/wall.png fill
+# or per-output:
+#   output eDP-1 bg ~/wallpapers/wall.png fill
+# Note: monitor layout (positions, modes) goes here instead of xrandr scripts.
+#   Example: output HDMI-A-1 mode 1920x1080@60Hz pos 0 0
+#            output eDP-1    mode 2560x1440@60Hz pos 1920 0
+output * bg #1e1e2e solid_color
+
+### Input ────────────────────────────────────────────────────────────────────
+input type:keyboard {
+    repeat_delay 400
+    repeat_rate  30
+}
+
+input type:touchpad {
+    tap              enabled
+    tap_button_map   lrm
+    click_method     clickfinger
+    dwt              enabled
+    natural_scroll   disabled
+}
+
+seat seat0 hide_cursor when-typing enable
+
+## Touchpad gestures
+bindgesture swipe:3:right workspace prev
+bindgesture swipe:3:left  workspace next
+bindgesture swipe:4:up    move container to workspace next
+bindgesture swipe:4:down  move container to workspace prev
+
+### Idle / lock ──────────────────────────────────────────────────────────────
+# swayidle: lock at 5 min, screen off at 10 min, lock before sleep
+exec swayidle -w \
+    timeout 300  'swaylock -f' \
+    timeout 600  'swaymsg "output * power off"' \
+    resume       'swaymsg "output * power on"'  \
+    before-sleep 'swaylock -f'
+
+# Lid switch: lock immediately on close, re-enable output on open
+bindswitch --locked lid:on  exec swaylock -f
+bindswitch --locked lid:off exec swaymsg "output * power on"
+
+### Appearance ───────────────────────────────────────────────────────────────
+default_border          pixel 2
+default_floating_border pixel 2
+hide_edge_borders       smart
+
+gaps inner 5
+gaps outer 10
+smart_borders on
+smart_gaps    on
+
+# target                 title     bg    text   indicator  border
+client.focused           $lavender $base $text  $rosewater $lavender
+client.focused_inactive  $overlay0 $base $text  $rosewater $overlay0
+client.unfocused         $overlay0 $base $text  $rosewater $overlay0
+client.urgent            $peach    $base $peach $overlay0  $peach
+client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
+client.background        $base
+
+# Default opacity for all new windows (daemon overrides on focus events)
+for_window [all] opacity 0.95
+
+### Autostart ────────────────────────────────────────────────────────────────
+exec mako
+exec copyq
+
+### Workspace → output pinning ───────────────────────────────────────────────
+# Syntax: workspace <N> output <preferred> [<fallback> ...]
+# When the preferred output is connected, its workspaces migrate there
+# automatically. When disconnected, they fall back to the next in the list.
+#
+# Run `swaymsg -t get_outputs` to find your output names.
+# Common names: eDP-1 (laptop panel), HDMI-A-1, DP-1, DP-2
+#
+# Example — laptop + one external monitor:
+#   workspace 1 output eDP-1              # always on laptop
+#   workspace 2 output eDP-1
+#   workspace 3 output eDP-1
+#   workspace 4 output HDMI-A-1 eDP-1    # external when plugged in, laptop otherwise
+#   workspace 5 output HDMI-A-1 eDP-1
+#   workspace 6 output HDMI-A-1 eDP-1
+#
+workspace 1 output eDP-1
+workspace 2 output eDP-1
+workspace 3 output eDP-1
+workspace 4 output eDP-1
+workspace 5 output HDMI-A-1 eDP-1
+workspace 6 output HDMI-A-1 eDP-1
+workspace 7 output HDMI-A-1 eDP-1
+workspace 8 output HDMI-A-1 eDP-1
+workspace 9 output HDMI-A-1 eDP-1
+
+### App → workspace assignment ───────────────────────────────────────────────
+# Syntax: assign [app_id="..."] → workspace <N>
+# app_id matches Wayland apps; use class="..." for X11/XWayland apps.
+# Run `swaymsg -t get_tree` on an open window to find its app_id or class.
+#
+# Example:
+#   assign [app_id="firefox"]        → workspace 2
+#   assign [app_id="kitty"]          → workspace 1
+#   assign [app_id="discord"]        → workspace 9
+#   assign [class="Steam"]           → workspace 8
+#   assign [app_id="com.obsproject.*"] → workspace 7
+#
+# Uncomment and edit:
+# assign [app_id="firefox"]   → workspace 2
+# assign [app_id="discord"]   → workspace 9
+# assign [class="Steam"]      → workspace 8
+
+### Window rules ────────────────────────────────────────────────────────────
+
+## Floating
+for_window [app_id="pavucontrol"]          floating enable
+for_window [app_id="nm-connection-editor"] floating enable
+for_window [app_id="blueman-manager"]      floating enable
+for_window [app_id="copyq"]                floating enable
+for_window [window_type="dialog"]          floating enable
+for_window [window_type="utility"]         floating enable
+
+## Idle inhibition — prevent lock/screen-off while these are visible
+for_window [app_id="mpv"]                  inhibit_idle visible
+for_window [app_id="vlc"]                  inhibit_idle visible
+for_window [app_id="firefox"]              inhibit_idle fullscreen
+for_window [app_id="chromium"]             inhibit_idle fullscreen
+for_window [class="Steam"]                 inhibit_idle visible
+
+### Key bindings ─────────────────────────────────────────────────────────────
+
+## Basics
+bindsym $mod+Return       exec $term
+bindsym $mod+Shift+c      kill
+bindsym $mod+p            exec $menu
+bindsym $mod+Shift+r      reload
+bindsym $mod+Ctrl+l       exec swaylock -f
+bindsym $mod+Shift+q      exec swaynag -t warning \
+    -m 'Exit sway? This ends your Wayland session.' \
+    -B 'Yes, exit' 'swaymsg exit'
+
+# $mod+LMB drag = move floating window
+# $mod+RMB drag = resize floating window
+# Note: sway cannot auto-float a tiling window on drag-start (dwm limitation).
+#   Float a window first with $mod+MMB or $mod+Shift+r, then drag it freely.
+floating_modifier $mod normal
+
+## Float toggle — mirrors dwm's Button2 (MMB) and Mod+Shift+r togglefloating
+bindsym --whole-window $mod+button2 floating toggle
+
+## Window opacity (mirrors dwm's changefocusopacity / changeunfocusopacity)
+# Note: sway has per-window opacity only — no separate focused/unfocused state.
+# Shift+a/s nudge the focused window; Shift+z/x use a coarser step as a secondary pair.
+bindsym $mod+Shift+a opacity plus  0.05
+bindsym $mod+Shift+s opacity minus 0.05
+bindsym $mod+Shift+z opacity plus  0.1
+bindsym $mod+Shift+x opacity minus 0.1
+
+## Screenshots (requires grim; region selection also requires slurp)
+bindsym      Print exec grim ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png
+bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png
+
+## Audio (PulseAudio / PipeWire)
+bindsym --locked XF86AudioMute        exec pactl set-sink-mute   @DEFAULT_SINK@   toggle
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@   -5%
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@   +5%
+bindsym --locked XF86AudioMicMute     exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+## Media keys
+bindsym --locked XF86AudioPlay  exec playerctl play-pause
+bindsym --locked XF86AudioPause exec playerctl play-pause
+bindsym --locked XF86AudioPrev  exec playerctl previous
+bindsym --locked XF86AudioNext  exec playerctl next
+bindsym --locked XF86AudioStop  exec playerctl stop
+
+## Brightness
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86MonBrightnessUp   exec brightnessctl set 5%+
+
+## Focus (vim keys + arrows)
+bindsym $mod+$left  focus left
+bindsym $mod+$down  focus down
+bindsym $mod+$up    focus up
+bindsym $mod+$right focus right
+bindsym $mod+Left   focus left
+bindsym $mod+Down   focus down
+bindsym $mod+Up     focus up
+bindsym $mod+Right  focus right
+
+## Move containers
+bindsym $mod+Shift+$left  move left
+bindsym $mod+Shift+$down  move down
+bindsym $mod+Shift+$up    move up
+bindsym $mod+Shift+$right move right
+bindsym $mod+Shift+Left   move left
+bindsym $mod+Shift+Down   move down
+bindsym $mod+Shift+Up     move up
+bindsym $mod+Shift+Right  move right
+
+## Workspaces
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+
+workspace_auto_back_and_forth no
+bindsym $mod+Tab workspace back_and_forth
+
+## Layout
+bindsym $mod+b          splith
+bindsym $mod+v          splitv
+bindsym $mod+s          layout stacking
+bindsym $mod+w          layout tabbed
+bindsym $mod+e          layout toggle split
+bindsym $mod+m          fullscreen
+bindsym $mod+Shift+m    fullscreen global
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space      focus mode_toggle
+bindsym $mod+a          focus parent
+
+## Sticky — show on all workspaces (mirrors dwm's Mod+Shift+0 tag ~0)
+# Only applies to floating windows; float first with $mod+MMB if needed.
+bindsym $mod+Shift+0 sticky toggle
+
+## Scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus       scratchpad show
+
+## Multi-monitor
+bindsym $mod+comma       focus output left
+bindsym $mod+period      focus output right
+bindsym $mod+Shift+comma  move container to output left
+bindsym $mod+Shift+period move container to output right
+
+## Resize mode
+mode "resize" {
+    bindsym $left  resize shrink width  10px
+    bindsym $down  resize grow   height 10px
+    bindsym $up    resize shrink height 10px
+    bindsym $right resize grow   width  10px
+
+    bindsym Left   resize shrink width  10px
+    bindsym Down   resize grow   height 10px
+    bindsym Up     resize shrink height 10px
+    bindsym Right  resize grow   width  10px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+### Bar ──────────────────────────────────────────────────────────────────────
+bar {
+    colors {
+    background         $base
+    statusline         $text
+    focused_statusline $text
+    focused_separator  $base
+
+    # target           border bg        text
+    focused_workspace  $base  $mauve    $crust
+    active_workspace   $base  $surface2 $text
+    inactive_workspace $base  $base     $text
+    urgent_workspace   $base  $red      $crust
+    }
+    swaybar_command waybar
+}
+
+### System config ────────────────────────────────────────────────────────────
+include @sysconfdir@/sway/config.d/*

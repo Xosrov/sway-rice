@@ -1,0 +1,429 @@
+// -*- mode: jsonc -*-
+// Waybar config — Catppuccin Mocha, full-featured
+// All modules showcased; tweak the "modules-right" order to taste.
+{
+    "layer": "top",
+    "position": "top",
+    "height": 36,
+    "spacing": 0,
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+
+    // ── Layout ────────────────────────────────────────────────────────────
+    "modules-left": [
+        "sway/workspaces",
+        "sway/mode",
+        "sway/scratchpad",
+        "wlr/taskbar",
+        "custom/sep",
+        "mpd",
+        "mpris",
+        "cava"
+    ],
+    "modules-center": [
+        "sway/window"
+    ],
+    "modules-right": [
+        "privacy",
+        "idle_inhibitor",
+        "systemd-failed-units",
+        "custom/sep",
+        "backlight",
+        "pulseaudio",
+        "bluetooth",
+        "network",
+        "custom/sep",
+        "load",
+        "cpu",
+        "memory",
+        "temperature",
+        "disk",
+        "custom/sep",
+        "power-profiles-daemon",
+        "keyboard-state",
+        "sway/language",
+        "battery",
+        "custom/sep",
+        "clock",
+        "tray",
+        "custom/power"
+    ],
+
+    // ── Sway modules ──────────────────────────────────────────────────────
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": false,
+        "warp-on-scroll": false,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9",
+            "urgent":  "",
+            "focused": "",
+            "default": ""
+        }
+    },
+
+    "sway/mode": {
+        "format": "  {}",
+        "tooltip": false
+    },
+
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+
+    "sway/window": {
+        "max-length": 60,
+        "tooltip": false,
+        "rewrite": {
+            "(.*) — Mozilla Firefox": "$1",
+            "(.*) - Visual Studio Code": "󰨞  $1",
+            "(.*) - kitty": "$1"
+        }
+    },
+
+    "sway/language": {
+        "format": "  {short}",
+        "tooltip-format": "{long}",
+        "on-click": "swaymsg input type:keyboard xkb_switch_layout next"
+    },
+
+    // ── Window list / taskbar ─────────────────────────────────────────────
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 18,
+        "icon-theme": "Papirus-Dark",
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close",
+        "on-click-right": "fullscreen",
+        "ignore-list": [],
+        "all-outputs": false
+    },
+
+    // ── Media ─────────────────────────────────────────────────────────────
+    "mpd": {
+        "interval": 5,
+        "unknown-tag": "N/A",
+        "max-length": 45,
+        "format": "{stateIcon} {artist} – {title}  {elapsedTime:%M:%S}/{totalTime:%M:%S}  {volume}%",
+        "format-disconnected": "  Disconnected",
+        "format-stopped": "  Stopped",
+        "consume-icons": { "on": "󰮯 " },
+        "random-icons":  { "off": "", "on": "󰒝 " },
+        "repeat-icons":  { "on": "󰑖 " },
+        "single-icons":  { "on": "1 " },
+        "state-icons": {
+            "paused": "",
+            "playing": ""
+        },
+        "tooltip-format": "{artist} — {album}\n{title}  ({elapsedTime:%M:%S}/{totalTime:%M:%S})\nQueue: {songPosition}/{queueLength}",
+        "tooltip-format-disconnected": "MPD (disconnected)",
+        "on-click": "mpc toggle",
+        "on-click-right": "kitty --title ncmpcpp ncmpcpp",
+        "on-scroll-up": "mpc volume +5",
+        "on-scroll-down": "mpc volume -5"
+    },
+
+    // Native MPRIS — Spotify, browsers, mpv, etc.
+    "mpris": {
+        "format": "{player_icon} {dynamic}",
+        "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "format-stopped": "",
+        "dynamic-len": 40,
+        "dynamic-order": ["title", "artist"],
+        "dynamic-separator": " — ",
+        "interval": 1,
+        "player-icons": {
+            "default": "▶",
+            "spotify": "",
+            "firefox": "",
+            "chromium": "",
+            "vlc": "󰕼",
+            "mpv": ""
+        },
+        "status-icons": {
+            "paused": "",
+            "playing": "",
+            "stopped": ""
+        },
+        "tooltip-format": "{player}: {status}\n{title}\nby {artist}\non {album}",
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "on-click-middle": "playerctl previous",
+        "on-scroll-up": "playerctl volume 0.05+",
+        "on-scroll-down": "playerctl volume 0.05-"
+    },
+
+    "cava": {
+        "framerate": 30,
+        "autosens": 1,
+        "bars": 10,
+        "lower_cutoff_freq": 50,
+        "higher_cutoff_freq": 10000,
+        "method": "pulse",
+        "source": "auto",
+        "stereo": true,
+        "reverse": false,
+        "bar_delimiter": 0,
+        "monstercat": false,
+        "waves": false,
+        "noise_reduction": 0.77,
+        "input_delay": 2,
+        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+        "actions": {
+            "on-click-right": "mode"
+        }
+    },
+
+    // ── Right-side modules ────────────────────────────────────────────────
+    "privacy": {
+        "icon-spacing": 6,
+        "icon-size": 16,
+        "transition-duration": 250,
+        "modules": [
+            {
+                "type": "screenshare",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-in",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-out",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            }
+        ]
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated":   "󰒳",
+            "deactivated": "󰒲"
+        },
+        "tooltip-format-activated": "Idle inhibited — click to allow idle",
+        "tooltip-format-deactivated": "Idle allowed — click to inhibit"
+    },
+
+    "systemd-failed-units": {
+        "hide-on-ok": true,
+        "format": "  {nr_failed}",
+        "format-ok": "",
+        "system": true,
+        "user": true,
+        "tooltip-format": "{nr_failed_system} system + {nr_failed_user} user units failed",
+        "on-click": "kitty --title systemctl-failed systemctl --failed"
+    },
+
+    "backlight": {
+        "format": "{icon}  {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "tooltip-format": "Backlight: {percent}%",
+        "smooth-scrolling-threshold": 1,
+        "on-scroll-up":   "brightnessctl set 5%+",
+        "on-scroll-down": "brightnessctl set 5%-",
+        "on-click": "brightnessctl set 50%"
+    },
+
+    "pulseaudio": {
+        "scroll-step": 1,
+        "format": "{icon}  {volume}%  {format_source}",
+        "format-bluetooth":       "{icon}  {volume}%  {format_source}",
+        "format-bluetooth-muted": "󰝟  {format_source}",
+        "format-muted":           "󰝟  {format_source}",
+        "format-source":          "{volume}%",
+        "format-source-muted":    " ",
+        "format-icons": {
+            "headphones": "",
+            "handsfree": "",
+            "headset": "󰋋",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default":    ["󰕿", "󰖀", "󰕾"]
+        },
+        "tooltip-format": "{desc}\nVolume: {volume}%",
+        "on-click":       "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-click-right": "pavucontrol",
+        "on-click-middle": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+        "on-scroll-up":   "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+    },
+
+    "bluetooth": {
+        "format": "",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
+        "format-on": "",
+        "format-connected": "  {device_alias}",
+        "format-connected-battery": "  {device_alias} {device_battery_percentage}%",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+        "on-click": "rfkill toggle bluetooth",
+        "on-click-right": "kitty --title bluetoothctl bluetoothctl"
+    },
+
+    "network": {
+        "interval": 5,
+        "format-wifi":       "{essid} ({signalStrength}%)",
+        "format-ethernet":   "󰈀  {ipaddr}/{cidr}",
+        "format-linked":     "󰈀  {ifname} (No IP)",
+        "format-disconnected": "󰤭  Disconnected",
+        "format-alt":        "↑ {bandwidthUpBytes}  ↓ {bandwidthDownBytes}",
+        "tooltip-format":    "{ifname}: {ipaddr}\nGateway: {gwaddr}\nStrength: {signalStrength}%\n↑ {bandwidthUpBytes}  ↓ {bandwidthDownBytes}",
+        "tooltip-format-disconnected": "Network disconnected",
+        "on-click-right": "kitty --title nmtui nmtui"
+    },
+
+    "load": {
+        "interval": 5,
+        "format": "  {load1}",
+        "format-alt": "  {load1} {load5} {load15}",
+        "tooltip-format": "Load average\n1 min  : {load1}\n5 min  : {load5}\n15 min : {load15}"
+    },
+
+    "cpu": {
+        "interval": 2,
+        "format": "  {usage}%",
+        "format-alt": "  {avg_frequency} GHz",
+        "tooltip": true,
+        // htop, sort by cpu
+        "on-click-right": "kitty --title htop htop -s PERCENT_CPU"
+    },
+
+    "memory": {
+        "interval": 5,
+        "format": "  {used:.1f}G",
+        "format-alt": "  {percentage}%",
+        "tooltip": true,
+        "tooltip-format": "RAM  {used:.2f}G / {total:.2f}G  ({percentage}%)\nSwap {swapUsed:.2f}G / {swapTotal:.2f}G  ({swapPercentage}%)",
+        // htop, sort by memory
+        "on-click-right": "kitty --title htop htop -s PERCENT_MEM"
+    },
+
+    "temperature": {
+        "critical-threshold": 80,
+        "format": "{icon}  {temperatureC}°C",
+        "format-critical": "{icon}  {temperatureC}°C",
+        "format-icons": ["", "", "", "", ""],
+        "tooltip": true,
+        "tooltip-format": "Temperature: {temperatureC}°C"
+    },
+
+    "disk": {
+        "interval": 30,
+        "path": "/",
+        "format": "  {free}",
+        "format-alt": "  {percentage_used}%",
+        "tooltip": true,
+        "tooltip-format": "{path}\n{used} / {total}  ({percentage_used}% used)\n{free} free",
+        "on-right-click": "kitty --title ncdu ncdu /"
+    },
+
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip": true,
+        "tooltip-format": "Profile: {profile}\nDriver: {driver}",
+        "format-icons": {
+            "default":      "󱐋",
+            "performance":  "󱐋",
+            "balanced":     "",
+            "power-saver":  "󰤄"
+        }
+    },
+
+    "keyboard-state": {
+        "numlock": true,
+        "capslock": true,
+        "format": "{name} {icon}",
+        "format-icons": {
+            "locked":   "",
+            "unlocked": ""
+        }
+    },
+
+    "battery": {
+        "interval": 30,
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "{capacity}%",
+        "format-plugged":  "{capacity}%",
+        "format-full":     "Full",
+        "format-alt":      "{icon}  {time}",
+        "format-icons":    ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "Battery: {capacity}%\nTime remaining: {time}\nDraw: {power}W"
+    },
+
+    "clock": {
+        "format":     "  {:%H:%M}",
+        "format-alt": "  {:%a %d %b %Y}",
+        "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "on-scroll": 1,
+            "weeks-pos": "left",
+            "format": {
+                "months":   "<span color='#cba6f7'><b>{}</b></span>",
+                "days":     "<span color='#cdd6f4'>{}</span>",
+                "weeks":    "<span color='#74c7ec'><b>W{}</b></span>",
+                "weekdays": "<span color='#a6e3a1'><b>{}</b></span>",
+                "today":    "<span color='#f38ba8'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-scroll-up":   "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8
+    },
+
+    // ── Custom helpers ────────────────────────────────────────────────────
+    // Thin visual separator between module groups
+    "custom/sep": {
+        "format": "│",
+        "interval": "once",
+        "tooltip": false
+    },
+
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": false,
+        "menu": "on-click",
+        "menu-file": "~/.config/waybar/power_menu.xml",
+        "menu-actions": {
+            "shutdown":  "systemctl poweroff",
+            "reboot":    "systemctl reboot",
+            "suspend":   "systemctl suspend",
+            "hibernate": "systemctl hibernate"
+        }
+    }
+}

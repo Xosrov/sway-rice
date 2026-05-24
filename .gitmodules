@@ -1,0 +1,8 @@
+[submodule "src/sway"]
+	path = src/sway
+	url = https://github.com/swaywm/sway.git
+	branch = v1.12
+[submodule "src/wlroots"]
+	path = src/wlroots
+	url = https://gitlab.freedesktop.org/wlroots/wlroots.git
+	branch = 0.20

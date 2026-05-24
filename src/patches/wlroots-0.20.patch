@@ -1,0 +1,72 @@
+diff --git a/subprojects/libdisplay-info.wrap b/subprojects/libdisplay-info.wrap
+index f92d3041..85a0446a 100644
+--- a/subprojects/libdisplay-info.wrap
++++ b/subprojects/libdisplay-info.wrap
+@@ -1,3 +1,3 @@
+ [wrap-git]
+ url = https://gitlab.freedesktop.org/emersion/libdisplay-info.git
+-revision = HEAD
++revision = 0.3.0
+diff --git a/subprojects/libdrm.wrap b/subprojects/libdrm.wrap
+index 2b5ca29c..228bfd46 100644
+--- a/subprojects/libdrm.wrap
++++ b/subprojects/libdrm.wrap
+@@ -1,3 +1,3 @@
+ [wrap-git]
+ url = https://gitlab.freedesktop.org/mesa/drm.git
+-revision = HEAD
++revision = libdrm-2.4.133
+diff --git a/subprojects/libliftoff.wrap b/subprojects/libliftoff.wrap
+index 57e6bb23..a9b24ef4 100644
+--- a/subprojects/libliftoff.wrap
++++ b/subprojects/libliftoff.wrap
+@@ -1,3 +1,3 @@
+ [wrap-git]
+ url = https://gitlab.freedesktop.org/emersion/libliftoff.git
+-revision = HEAD
++revision = v0.5.0
+diff --git a/subprojects/libxkbcommon.wrap b/subprojects/libxkbcommon.wrap
+index 102b8449..a50aba31 100644
+--- a/subprojects/libxkbcommon.wrap
++++ b/subprojects/libxkbcommon.wrap
+@@ -1,3 +1,3 @@
+ [wrap-git]
+ url = https://github.com/xkbcommon/libxkbcommon.git
+-revision = HEAD
++revision = xkbcommon-1.13.1
+diff --git a/subprojects/pixman.wrap b/subprojects/pixman.wrap
+index e34794a9..e57ba76d 100644
+--- a/subprojects/pixman.wrap
++++ b/subprojects/pixman.wrap
+@@ -1,3 +1,3 @@
+ [wrap-git]
+ url = https://gitlab.freedesktop.org/pixman/pixman.git
+-revision = HEAD
++revision = pixman-0.46.4
+diff --git a/subprojects/seatd.wrap b/subprojects/seatd.wrap
+index 2116366b..d8c1409d 100644
+--- a/subprojects/seatd.wrap
++++ b/subprojects/seatd.wrap
+@@ -1,3 +1,3 @@
+ [wrap-git]
+ url = https://git.sr.ht/~kennylevinsen/seatd
+-revision = HEAD
++revision = 0.9.3
+diff --git a/subprojects/wayland-protocols.wrap b/subprojects/wayland-protocols.wrap
+index 7b093efc..03b088fe 100644
+--- a/subprojects/wayland-protocols.wrap
++++ b/subprojects/wayland-protocols.wrap
+@@ -1,3 +1,3 @@
+ [wrap-git]
+ url = https://gitlab.freedesktop.org/wayland/wayland-protocols.git
+-revision = HEAD
++revision = 1.48
+diff --git a/subprojects/wayland.wrap b/subprojects/wayland.wrap
+index 18d26567..3fc2fb48 100644
+--- a/subprojects/wayland.wrap
++++ b/subprojects/wayland.wrap
+@@ -1,3 +1,3 @@
+ [wrap-git]
+ url = https://gitlab.freedesktop.org/wayland/wayland.git
+-revision = HEAD
++revision = 1.25.0

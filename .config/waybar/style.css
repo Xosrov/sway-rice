@@ -1,0 +1,477 @@
+@import "mocha.css";
+
+/* ── Global ─────────────────────────────────────────────────────────────── */
+* {
+    font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", monospace;
+    font-size: 13px;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    color: @text;
+}
+
+/* ── Bar window ──────────────────────────────────────────────────────────── */
+window#waybar {
+    background: transparent;
+    color: @text;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+}
+
+window#waybar > box {
+    background-color: shade(@base, 0.9);
+    border: 2px solid alpha(@crust, 0.3);
+    border-radius: 12px;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+/* ── Button reset ────────────────────────────────────────────────────────── */
+button {
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+button:hover {
+    background: inherit;
+    box-shadow: none;
+}
+
+/* ── Workspaces ──────────────────────────────────────────────────────────── */
+#workspaces {
+    background: @surface0;
+    border-radius: 8px;
+    margin: 4px 4px 4px 8px;
+    padding: 0 4px;
+}
+
+#workspaces button {
+    padding: 0 10px;
+    color: @overlay1;
+    background: transparent;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+    font-size: 12px;
+}
+
+#workspaces button:hover {
+    background: @surface1;
+    color: @subtext1;
+}
+
+#workspaces button.visible {
+    color: @subtext0;
+    background: @surface1;
+}
+
+#workspaces button.focused,
+#workspaces button.active {
+    background: @mauve;
+    color: @crust;
+    font-weight: bold;
+}
+
+#workspaces button.urgent {
+    background: @red;
+    color: @crust;
+    animation-name: urgent-blink;
+    animation-duration: 0.8s;
+    animation-timing-function: steps(4);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes urgent-blink {
+    to { background: @maroon; }
+}
+
+/* ── Mode (resize etc.) ──────────────────────────────────────────────────── */
+#mode {
+    background: @peach;
+    color: @crust;
+    border-radius: 8px;
+    margin: 4px 4px;
+    padding: 0 12px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* ── Scratchpad ──────────────────────────────────────────────────────────── */
+#scratchpad {
+    background: @surface1;
+    color: @subtext0;
+    border-radius: 8px;
+    margin: 4px 4px;
+    padding: 0 12px;
+}
+
+#scratchpad.empty {
+    background: transparent;
+    color: transparent;
+}
+
+/* ── MPD ─────────────────────────────────────────────────────────────────── */
+#mpd {
+    background: @surface0;
+    color: @green;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+#mpd.disconnected { color: @overlay0; }
+#mpd.stopped      { color: @overlay1; }
+#mpd.paused       { color: @subtext0; }
+
+/* ── MPRIS (native) ──────────────────────────────────────────────────────── */
+#mpris {
+    background: @surface0;
+    color: @teal;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+    min-width: 80px;
+}
+
+#mpris.playing { color: @teal; }
+#mpris.paused  { color: @overlay1; font-style: italic; }
+#mpris.stopped { color: @overlay0; }
+
+#mpris.spotify  { color: @green; }
+#mpris.firefox  { color: @peach; }
+#mpris.chromium { color: @blue;  }
+#mpris.vlc      { color: @peach; }
+#mpris.mpv      { color: @mauve; }
+
+/* ── Cava (audio visualizer) ─────────────────────────────────────────────── */
+#cava {
+    background: @surface0;
+    color: @pink;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 10px;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    letter-spacing: -1px;
+}
+
+/* ── wlr/taskbar ─────────────────────────────────────────────────────────── */
+#taskbar {
+    background: @surface0;
+    border-radius: 8px;
+    margin: 4px 4px;
+    padding: 2px 6px;
+}
+
+#taskbar button {
+    padding: 0 6px;
+    margin: 0 2px;
+    color: @subtext0;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+#taskbar button.active {
+    background: @surface1;
+    color: @text;
+}
+
+#taskbar button:hover {
+    background: @surface2;
+}
+
+/* ── Window title ────────────────────────────────────────────────────────── */
+#window {
+    color: @subtext0;
+    font-style: italic;
+    padding: 0 12px;
+}
+
+
+/* ── Visual separator ────────────────────────────────────────────────────── */
+#custom-sep {
+    color: @surface2;
+    font-size: 16px;
+    margin: 0 4px;
+}
+
+/* ── Privacy ─────────────────────────────────────────────────────────────── */
+#privacy {
+    padding: 0 6px;
+}
+
+#privacy-item {
+    padding: 0 6px;
+    border-radius: 6px;
+    margin: 4px 1px;
+}
+
+#privacy-item.screenshare { color: @peach; }
+#privacy-item.audio-in    { color: @green; }
+#privacy-item.audio-out   { color: @sky;   }
+
+/* ── systemd failed units ────────────────────────────────────────────────── */
+#systemd-failed-units {
+    background: @red;
+    color: @crust;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 10px;
+    font-weight: bold;
+}
+
+#systemd-failed-units.ok {
+    background: transparent;
+    color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+/* ── Idle inhibitor ──────────────────────────────────────────────────────── */
+#idle_inhibitor {
+    background: @surface0;
+    color: @overlay1;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+    transition: all 0.2s ease;
+}
+
+#idle_inhibitor.activated {
+    background: @yellow;
+    color: @crust;
+}
+
+/* ── Backlight ───────────────────────────────────────────────────────────── */
+#backlight {
+    background: @surface0;
+    color: @yellow;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+/* ── Pulseaudio ──────────────────────────────────────────────────────────── */
+#pulseaudio {
+    background: @surface0;
+    color: @flamingo;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+#pulseaudio.muted     { color: @overlay0; }
+#pulseaudio.bluetooth { color: @blue;     }
+
+#pulseaudio:hover { background: @surface1; }
+
+/* ── Bluetooth ───────────────────────────────────────────────────────────── */
+#bluetooth {
+    background: @surface0;
+    color: @blue;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+#bluetooth.disabled,
+#bluetooth.off { color: @overlay0; }
+#bluetooth.connected { color: @sapphire; }
+#bluetooth:hover { background: @surface1; }
+
+/* ── Network ─────────────────────────────────────────────────────────────── */
+#network {
+    background: @surface0;
+    color: @sky;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+#network.disconnected { color: @red; }
+#network.linked       { color: @overlay1; }
+#network:hover        { background: @surface1; }
+
+/* ── Load average ────────────────────────────────────────────────────────── */
+#load {
+    background: @surface0;
+    color: @rosewater;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+/* ── CPU ─────────────────────────────────────────────────────────────────── */
+#cpu {
+    background: @surface0;
+    color: @sapphire;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+/* ── Memory ──────────────────────────────────────────────────────────────── */
+#memory {
+    background: @surface0;
+    color: @lavender;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+/* ── Temperature ─────────────────────────────────────────────────────────── */
+#temperature {
+    background: @surface0;
+    color: @peach;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+#temperature.critical {
+    background: @surface1;
+    color: @red;
+    animation-name: temp-blink;
+    animation-duration: 0.6s;
+    animation-timing-function: steps(6);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes temp-blink {
+    to { color: @maroon; }
+}
+
+/* ── Disk ────────────────────────────────────────────────────────────────── */
+#disk {
+    background: @surface0;
+    color: @teal;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+/* ── Power profiles daemon ───────────────────────────────────────────────── */
+#power-profiles-daemon {
+    background: @surface0;
+    color: @peach;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+#power-profiles-daemon.performance { color: @red;   }
+#power-profiles-daemon.balanced    { color: @blue;  }
+#power-profiles-daemon.power-saver { color: @green; }
+
+/* ── Keyboard state ──────────────────────────────────────────────────────── */
+#keyboard-state {
+    background: @surface0;
+    color: @overlay0;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 6px;
+}
+
+#keyboard-state > label {
+    padding: 0 4px;
+    color: @overlay0;
+}
+
+#keyboard-state > label.locked {
+    color: @yellow;
+}
+
+/* ── Language ────────────────────────────────────────────────────────────── */
+#language {
+    background: @surface0;
+    color: @subtext0;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 10px;
+    min-width: 28px;
+}
+
+/* ── Battery ─────────────────────────────────────────────────────────────── */
+#battery {
+    background: @surface0;
+    color: @green;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 12px;
+}
+
+#battery.good     { color: @green; }
+#battery.warning  { color: @yellow; }
+#battery.critical { color: @red; }
+
+#battery.charging,
+#battery.plugged  { color: @teal; }
+
+#battery.full     { color: @green; }
+
+@keyframes battery-blink {
+    to {
+        background: @red;
+        color: @crust;
+    }
+}
+
+#battery.critical:not(.charging) {
+    animation-name: battery-blink;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(10);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/* ── Clock ───────────────────────────────────────────────────────────────── */
+#clock {
+    background: @mauve;
+    color: @crust;
+    border-radius: 8px;
+    margin: 4px 4px;
+    padding: 0 14px;
+    font-weight: bold;
+}
+
+/* ── Tray ────────────────────────────────────────────────────────────────── */
+#tray {
+    background: @surface0;
+    border-radius: 8px;
+    margin: 4px 2px;
+    padding: 0 10px;
+}
+
+#tray > .passive         { -gtk-icon-effect: dim; }
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background: @red;
+    border-radius: 6px;
+}
+
+/* ── Power button ────────────────────────────────────────────────────────── */
+#custom-power {
+    background: @red;
+    color: @crust;
+    border-radius: 8px;
+    margin: 4px 8px 4px 2px;
+    padding: 0 14px;
+    font-size: 15px;
+    transition: background 0.15s ease;
+}
+
+#custom-power:hover { background: @maroon; }
+
+/* ── Tooltip ─────────────────────────────────────────────────────────────── */
+tooltip {
+    background: @mantle;
+    border: 1px solid @surface1;
+    border-radius: 8px;
+    color: @text;
+}
+
+tooltip label { color: @text; }

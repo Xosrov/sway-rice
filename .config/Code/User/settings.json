@@ -1,0 +1,27 @@
+{
+	"workbench.iconTheme": "catppuccin-mocha",
+	"workbench.colorTheme": "Catppuccin Mocha",
+	"C_Cpp.intelliSenseEngine": "disabled",
+	"telemetry.feedback.enabled": false,
+	"telemetry.telemetryLevel": "off",
+	"gitlens.telemetry.enabled": false,
+	"sonarlint.disableTelemetry": true,
+	"editor.fontFamily": "JetBrainsMono Nerd Font Mono",
+	"github.copilot.enable": {
+		"*": true,
+		"plaintext": true,
+		"markdown": true,
+		"scminput": false
+	},
+	"terminal.integrated.enableKittyKeyboardProtocol": false,
+	"python-envs.terminal.autoActivationType": "shellStartup",
+	"sonarlint.focusOnNewCode": true,
+	"gitlens.rebaseEditor.openOnPausedRebase": false,
+	"[cpp]": {
+		"editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+	},
+	"editor.multiCursorLimit": 100000,
+	"terminal.integrated.stickyScroll.enabled": false,
+	"editor.minimap.enabled": false,
+	"files.autoSave": "afterDelay",
+}

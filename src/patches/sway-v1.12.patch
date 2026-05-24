@@ -1,0 +1,28 @@
+diff --git a/meson.build b/meson.build
+index eb97daf7..2aba2e4a 100644
+--- a/meson.build
++++ b/meson.build
+@@ -60,7 +60,10 @@ endforeach
+ 
+ null_dep = dependency('', required: false)
+ 
+-jsonc = dependency('json-c', version: '>=0.13')
++jsonc = dependency('json-c',
++	version: '>=0.13',
++	fallback: ['json-c', 'dep_jsonc'],
++)
+ pcre2 = dependency('libpcre2-8')
+ wayland_server = dependency('wayland-server', version: '>=1.21.0')
+ wayland_client = dependency('wayland-client')
+@@ -72,7 +75,10 @@ pango = dependency('pango')
+ pangocairo = dependency('pangocairo')
+ gdk_pixbuf = dependency('gdk-pixbuf-2.0', required: get_option('gdk-pixbuf'))
+ pixman = dependency('pixman-1')
+-libevdev = dependency('libevdev')
++libevdev = dependency('libevdev',
++	fallback: ['libevdev', 'dep_libevdev'],
++	default_options: ['tests=disabled'],
++)
+ libinput = wlroots_features['libinput_backend'] ? dependency('libinput', version: '>=1.26.0') : null_dep
+ xcb = wlroots_features['xwayland'] ? dependency('xcb') : null_dep
+ drm = dependency('libdrm')
