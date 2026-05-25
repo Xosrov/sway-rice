@@ -15,14 +15,9 @@ set $menu  fuzzel
 font pango:JetBrainsMono Nerd Font 10
 
 ### Output ───────────────────────────────────────────────────────────────────
-# Replace with your wallpaper path, e.g.:
-#   output * bg ~/wallpapers/wall.png fill
-# or per-output:
-#   output eDP-1 bg ~/wallpapers/wall.png fill
 # Note: monitor layout (positions, modes) goes here instead of xrandr scripts.
 #   Example: output HDMI-A-1 mode 1920x1080@60Hz pos 0 0
 #            output eDP-1    mode 2560x1440@60Hz pos 1920 0
-output * bg #1e1e2e solid_color
 
 ### Input ────────────────────────────────────────────────────────────────────
 input type:keyboard {
@@ -53,6 +48,8 @@ exec swayidle -w \
     timeout 600  'swaymsg "output * power off"' \
     resume       'swaymsg "output * power on"'  \
     before-sleep 'swaylock -f'
+
+exec swaybg -i ~/wallpapers/wallpaper.jpg -m fill
 
 # Lid switch: lock immediately on close, re-enable output on open
 bindswitch --locked lid:on  exec swaylock -f
