@@ -73,7 +73,7 @@
     },
 
     "sway/mode": {
-        "format": "  {}",
+        "format": " {}",
         "tooltip": false
     },
 
@@ -90,13 +90,13 @@
         "tooltip": false,
         "rewrite": {
             "(.*) — Mozilla Firefox": "$1",
-            "(.*) - Visual Studio Code": "󰨞  $1",
+            "(.*) - Visual Studio Code": "󰨞 $1",
             "(.*) - kitty": "$1"
         }
     },
 
     "sway/language": {
-        "format": "  {short}",
+        "format": " {short}",
         "tooltip-format": "{long}",
         "on-click": "swaymsg input type:keyboard xkb_switch_layout next"
     },
@@ -119,9 +119,9 @@
         "interval": 5,
         "unknown-tag": "N/A",
         "max-length": 45,
-        "format": "{stateIcon} {artist} – {title}  {elapsedTime:%M:%S}/{totalTime:%M:%S}  {volume}%",
-        "format-disconnected": "  Disconnected",
-        "format-stopped": "  Stopped",
+        "format": "{stateIcon} {artist} – {title} {elapsedTime:%M:%S}/{totalTime:%M:%S} {volume}%",
+        "format-disconnected": " Disconnected",
+        "format-stopped": " Stopped",
         "consume-icons": { "on": "󰮯 " },
         "random-icons":  { "off": "", "on": "󰒝 " },
         "repeat-icons":  { "on": "󰑖 " },
@@ -130,7 +130,7 @@
             "paused": "",
             "playing": ""
         },
-        "tooltip-format": "{artist} — {album}\n{title}  ({elapsedTime:%M:%S}/{totalTime:%M:%S})\nQueue: {songPosition}/{queueLength}",
+        "tooltip-format": "{artist} — {album}\n{title} ({elapsedTime:%M:%S}/{totalTime:%M:%S})\nQueue: {songPosition}/{queueLength}",
         "tooltip-format-disconnected": "MPD (disconnected)",
         "on-click": "mpc toggle",
         "on-click-right": "kitty --title ncmpcpp ncmpcpp",
@@ -225,16 +225,16 @@
 
     "systemd-failed-units": {
         "hide-on-ok": true,
-        "format": "  {nr_failed}",
+        "format": " {nr_failed}",
         "format-ok": "",
         "system": true,
         "user": true,
         "tooltip-format": "{nr_failed_system} system + {nr_failed_user} user units failed",
-        "on-click": "kitty --title systemctl-failed systemctl --failed"
+        "on-click": "kitty --title systemctl-failed sh -c 'systemctl --failed; echo; systemctl --user --failed; echo; echo Press Enter to close...; read'"
     },
 
     "backlight": {
-        "format": "{icon}  {percent}%",
+        "format": "{icon} {percent}%",
         "format-icons": ["󰃞", "󰃟", "󰃠"],
         "tooltip-format": "Backlight: {percent}%",
         "smooth-scrolling-threshold": 1,
@@ -245,10 +245,10 @@
 
     "pulseaudio": {
         "scroll-step": 1,
-        "format": "{icon}  {volume}%  {format_source}",
-        "format-bluetooth":       "{icon}  {volume}%  {format_source}",
-        "format-bluetooth-muted": "󰝟  {format_source}",
-        "format-muted":           "󰝟  {format_source}",
+        "format": "{icon} {volume}% {format_source}",
+        "format-bluetooth":       "{icon} {volume}% {format_source}",
+        "format-bluetooth-muted": "󰝟 {format_source}",
+        "format-muted":           "󰝟 {format_source}",
         "format-source":          "{volume}%",
         "format-source-muted":    " ",
         "format-icons": {
@@ -273,8 +273,8 @@
         "format-disabled": "󰂲",
         "format-off": "󰂲",
         "format-on": "",
-        "format-connected": "  {device_alias}",
-        "format-connected-battery": "  {device_alias} {device_battery_percentage}%",
+        "format-connected": " {device_alias}",
+        "format-connected-battery": " {device_alias} {device_battery_percentage}%",
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
@@ -286,26 +286,26 @@
     "network": {
         "interval": 5,
         "format-wifi":       "{essid} ({signalStrength}%)",
-        "format-ethernet":   "󰈀  {ipaddr}/{cidr}",
-        "format-linked":     "󰈀  {ifname} (No IP)",
-        "format-disconnected": "󰤭  Disconnected",
-        "format-alt":        "↑ {bandwidthUpBytes}  ↓ {bandwidthDownBytes}",
-        "tooltip-format":    "{ifname}: {ipaddr}\nGateway: {gwaddr}\nStrength: {signalStrength}%\n↑ {bandwidthUpBytes}  ↓ {bandwidthDownBytes}",
+        "format-ethernet":   "󰈀 {ipaddr}/{cidr}",
+        "format-linked":     "󰈀 {ifname} (No IP)",
+        "format-disconnected": "󰤭 Disconnected",
+        "format-alt":        "↑ {bandwidthUpBytes} ↓ {bandwidthDownBytes}",
+        "tooltip-format":    "{ifname}: {ipaddr}\nGateway: {gwaddr}\nStrength: {signalStrength}%\n↑ {bandwidthUpBytes} ↓ {bandwidthDownBytes}",
         "tooltip-format-disconnected": "Network disconnected",
         "on-click-right": "kitty --title nmtui nmtui"
     },
 
     "load": {
         "interval": 5,
-        "format": "  {load1}",
-        "format-alt": "  {load1} {load5} {load15}",
-        "tooltip-format": "Load average\n1 min  : {load1}\n5 min  : {load5}\n15 min : {load15}"
+        "format": " {load1}",
+        "format-alt": " {load1} {load5} {load15}",
+        "tooltip-format": "Load average\n1 min : {load1}\n5 min : {load5}\n15 min : {load15}"
     },
 
     "cpu": {
         "interval": 2,
-        "format": "  {usage}%",
-        "format-alt": "  {avg_frequency} GHz",
+        "format": " {usage}%",
+        "format-alt": " {avg_frequency} GHz",
         "tooltip": true,
         // htop, sort by cpu
         "on-click-right": "kitty --title htop htop -s PERCENT_CPU"
@@ -313,18 +313,18 @@
 
     "memory": {
         "interval": 5,
-        "format": "  {used:.1f}G",
-        "format-alt": "  {percentage}%",
+        "format": " {used:.1f}G",
+        "format-alt": " {percentage}%",
         "tooltip": true,
-        "tooltip-format": "RAM  {used:.2f}G / {total:.2f}G  ({percentage}%)\nSwap {swapUsed:.2f}G / {swapTotal:.2f}G  ({swapPercentage}%)",
+        "tooltip-format": "RAM {used:.2f}G / {total:.2f}G ({percentage}%)\nSwap {swapUsed:.2f}G / {swapTotal:.2f}G ({swapPercentage}%)",
         // htop, sort by memory
         "on-click-right": "kitty --title htop htop -s PERCENT_MEM"
     },
 
     "temperature": {
         "critical-threshold": 80,
-        "format": "{icon}  {temperatureC}°C",
-        "format-critical": "{icon}  {temperatureC}°C",
+        "format": "{icon} {temperatureC}°C",
+        "format-critical": "{icon} {temperatureC}°C",
         "format-icons": ["", "", "", "", ""],
         "tooltip": true,
         "tooltip-format": "Temperature: {temperatureC}°C"
@@ -333,10 +333,10 @@
     "disk": {
         "interval": 30,
         "path": "/",
-        "format": "  {free}",
-        "format-alt": "  {percentage_used}%",
+        "format": " {free}",
+        "format-alt": " {percentage_used}%",
         "tooltip": true,
-        "tooltip-format": "{path}\n{used} / {total}  ({percentage_used}% used)\n{free} free",
+        "tooltip-format": "{path}\n{used} / {total} ({percentage_used}% used)\n{free} free",
         "on-right-click": "kitty --title ncdu ncdu /"
     },
 
@@ -369,18 +369,18 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon}  {capacity}%",
+        "format": "{icon} {capacity}%",
         "format-charging": "{capacity}%",
         "format-plugged":  "{capacity}%",
         "format-full":     "Full",
-        "format-alt":      "{icon}  {time}",
+        "format-alt":      "{icon} {time}",
         "format-icons":    ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
         "tooltip-format": "Battery: {capacity}%\nTime remaining: {time}\nDraw: {power}W"
     },
 
     "clock": {
-        "format":     "  {:%H:%M}",
-        "format-alt": "  {:%a %d %b %Y}",
+        "format":     " {:%H:%M}",
+        "format-alt": " {:%a %d %b %Y}",
         "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
         "calendar": {
             "mode": "month",
