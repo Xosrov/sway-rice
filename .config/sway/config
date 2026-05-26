@@ -51,9 +51,9 @@ exec swayidle -w \
 
 exec swaybg -i ~/wallpapers/wallpaper.jpg -m fill
 
-# Lid switch: lock immediately on close, re-enable output on open
-bindswitch --locked lid:on  exec swaylock -f
-bindswitch --locked lid:off exec swaymsg "output * power on"
+# Lid switch: smart close (clamshell-aware), re-evaluate outputs on open
+bindswitch --locked lid:on  exec ~/.config/sway/lid-close.sh
+bindswitch --locked lid:off exec sh -c 'swaymsg "output * power on"; ~/.config/sway/output-manager.sh'
 
 ### Appearance ───────────────────────────────────────────────────────────────
 default_border          pixel 2
@@ -79,32 +79,14 @@ for_window [all] opacity 0.95
 ### Autostart ────────────────────────────────────────────────────────────────
 exec mako
 exec copyq
+exec ~/.config/sway/output-manager.sh
+exec ~/.config/sway/output-watcher.sh
 
 ### Workspace → output pinning ───────────────────────────────────────────────
-# Syntax: workspace <N> output <preferred> [<fallback> ...]
-# When the preferred output is connected, its workspaces migrate there
-# automatically. When disconnected, they fall back to the next in the list.
-#
-# Run `swaymsg -t get_outputs` to find your output names.
-# Common names: eDP-1 (laptop panel), HDMI-A-1, DP-1, DP-2
-#
-# Example — laptop + one external monitor:
-#   workspace 1 output eDP-1              # always on laptop
-#   workspace 2 output eDP-1
-#   workspace 3 output eDP-1
-#   workspace 4 output HDMI-A-1 eDP-1    # external when plugged in, laptop otherwise
-#   workspace 5 output HDMI-A-1 eDP-1
-#   workspace 6 output HDMI-A-1 eDP-1
-#
-workspace 1 output eDP-1
-workspace 2 output eDP-1
-workspace 3 output eDP-1
-workspace 4 output eDP-1
-workspace 5 output HDMI-A-1 eDP-1
-workspace 6 output HDMI-A-1 eDP-1
-workspace 7 output HDMI-A-1 eDP-1
-workspace 8 output HDMI-A-1 eDP-1
-workspace 9 output HDMI-A-1 eDP-1
+# Managed dynamically by output-manager.sh based on connected monitors:
+#   0 external → all workspaces on eDP-1
+#   1 external → 1-4 on eDP-1, 5-9 on external
+#   2 external → 1-4 on ext1, 5-9 on ext2, eDP-1 disabled (clamshell mode)
 
 ### App → workspace assignment ───────────────────────────────────────────────
 # Syntax: assign [app_id="..."] → workspace <N>
@@ -161,6 +143,11 @@ floating_modifier $mod normal
 
 ## Float toggle — mirrors dwm's Button2 (MMB) and Mod+Shift+r togglefloating
 bindsym --whole-window $mod+button2 floating toggle
+
+## Swap two tiling windows preserving their sizes (two-step: mark then swap)
+## Press $mod+Return on window A, then $mod+Return on window B to swap them.
+## Press $mod+Return on the same marked window to cancel.
+bindsym $mod+Return exec ~/.config/sway/swap-windows.sh
 
 ## Window opacity (mirrors dwm's changefocusopacity / changeunfocusopacity)
 # Note: sway has per-window opacity only — no separate focused/unfocused state.
