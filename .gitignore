@@ -10,6 +10,7 @@
 !.config/waybar
 !.config/swaylock
 !.config/fuzzel
+!.config/clipse
 
 !.config/copyq
 .config/copyq/*

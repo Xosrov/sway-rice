@@ -59,6 +59,11 @@ meson setup build
 ninja -C build
 cd ..
 
+# clipse is my clipboard manager
+cd clipse
+go mod tidy
+make wayland
+
 # Finally build Sway
 cd sway
 meson setup build --force-fallback-for=libevdev,jsonc
@@ -125,6 +130,9 @@ cd ../
 cd sway
 sudo ninja -C build install
 cd ..
+cd clipse
+sudo install -m 755 clipse /usr/local/bin
+cd ..
 cd catppuccin-gtk
 python3 install.py macchiato yellow
 cd ..
@@ -144,5 +152,4 @@ Name=Sway
 Comment=An i3-compatible Wayland compositor
 Exec=sway
 Type=Application" | sudo tee /usr/share/wayland-sessions/sway.desktop
-```
 ```

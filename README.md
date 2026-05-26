@@ -8,7 +8,7 @@ Combination of full Sway desktop with rice and dots.
 
 ```bash
 sudo apt install \
-    meson ninja-build pkg-config build-essential git scdoc \
+    meson ninja-build pkg-config build-essential git scdoc golang-go \
     libwayland-dev wayland-protocols libxkbcommon-dev libxkbregistry-dev \
     libcairo2-dev libpango1.0-dev libpixman-1-dev libdrm-dev libglib2.0-dev \
     libgdk-pixbuf-2.0-dev libgtkmm-3.0-dev libgtk-layer-shell-dev libsigc++-2.0-dev libepoxy-dev \
@@ -32,7 +32,7 @@ sudo apt install \
 
 ```bash
 sudo zypper install \
-    meson ninja pkgconf-pkg-config gcc gcc-c++ git scdoc \
+    meson ninja pkgconf-pkg-config gcc gcc-c++ git scdoc go \
     wayland-devel wayland-protocols-devel libxkbcommon-devel libxkbcommon-x11-devel \
     cairo-devel pango-devel libpixman-1-0-devel libdrm-devel glib2-devel \
     gdk-pixbuf-devel gtkmm3-devel gtk-layer-shell-devel libsigc++2-devel libepoxy-devel \
@@ -58,7 +58,7 @@ sudo zypper install \
 
 ```bash
 sudo pacman -S \
-    meson ninja base-devel git scdoc \
+    meson ninja base-devel git scdoc go \
     wayland wayland-protocols libxkbcommon \
     cairo pango pixman libdrm glib2 gdk-pixbuf2 gtkmm3 gtk-layer-shell \
     libsigc++ libepoxy \
@@ -96,7 +96,7 @@ Change fonts using the `pango-list` tool if you cant find your font
 sudo chch -s $(which fish)
 ```
 
-- Install copyq from https://github.com/hluk/CopyQ/releases
+- Install clipse
 - Add ~/.local/bin to path: `fish_add_path /home/amiryazdi/.local/bin/`
 
 ## Organizational

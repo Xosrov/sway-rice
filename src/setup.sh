@@ -10,6 +10,7 @@ WLROOTS_VERSION=0.20
 FUZZEL_VERSION=1.14.1
 CATPPUCCIN_GTK_VERSION=v1.0.3
 SDDM_ASTRO_THEME_REVISION=8c85b9c
+CLIPSE_VERSION=v1.2.1
 
 # clone main projects
 git clone --branch $SWAY_VERSION https://github.com/swaywm/sway.git sway
@@ -21,6 +22,7 @@ git clone --branch $MAKO_VERSION https://github.com/emersion/mako.git mako
 git clone --branch $WLROOTS_VERSION https://gitlab.freedesktop.org/wlroots/wlroots.git wlroots
 git clone --branch $FUZZEL_VERSION https://codeberg.org/dnkl/fuzzel.git fuzzel
 git clone --branch $CATPPUCCIN_GTK_VERSION https://github.com/catppuccin/gtk.git catppuccin-gtk
+git clone --branch $CLIPSE_VERSION https://github.com/savedra1/clipse.git clipse
 git clone https://github.com/Keyitdev/sddm-astronaut-theme.git sddm-astronaut-theme && cd sddm-astronaut-theme && git checkout $SDDM_ASTRO_THEME_REVISION && cd ../
 
 LIBEVDEV_VERSION=libevdev-1.13.6

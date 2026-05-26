@@ -323,7 +323,7 @@ button:hover {
 }
 
 /* ── Temperature ─────────────────────────────────────────────────────────── */
-#temperature {
+#custom-temperature {
     background: @surface0;
     color: @peach;
     border-radius: 8px;
@@ -331,7 +331,7 @@ button:hover {
     padding: 0 12px;
 }
 
-#temperature.critical {
+#custom-temperature.critical {
     background: @surface1;
     color: @red;
     animation-name: temp-blink;

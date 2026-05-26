@@ -37,7 +37,7 @@
         "load",
         "cpu",
         "memory",
-        "temperature",
+        "custom/temperature",
         "disk",
         "custom/sep",
         "power-profiles-daemon",
@@ -321,13 +321,14 @@
         "on-click-right": "kitty --title htop htop -s PERCENT_MEM"
     },
 
-    "temperature": {
-        "critical-threshold": 80,
-        "format": "{icon} {temperatureC}°C",
-        "format-critical": "{icon} {temperatureC}°C",
-        "format-icons": ["", "", "", "", ""],
+    // CPU thermal zone is resolved at runtime by the script;
+    // tooltip shows parsed `sensors` output.
+    "custom/temperature": {
+        "exec": "~/.config/waybar/scripts/cpu_temp.sh",
+        "return-type": "json",
+        "interval": 10,
         "tooltip": true,
-        "tooltip-format": "Temperature: {temperatureC}°C"
+        "format": "{}"
     },
 
     "disk": {
