@@ -3,7 +3,7 @@
 #
 #   0 external : all workspaces on laptop (eDP-1)
 #   1 external : 1-4 on laptop, 5-9 on external
-#   2+ external: 1-4 on ext1, 5-9 on ext2, laptop screen OFF
+#   2 external: 1-4 on ext1, 5-9 on ext2, laptop screen OFF
 
 INTERNAL="eDP-1"
 
@@ -26,7 +26,7 @@ case $EXT_COUNT in
         for i in 5 6 7 8 9; do swaymsg "workspace $i output ${EXTERNALS[0]}"; done
         swaymsg "output $INTERNAL enable"
         ;;
-    *)
+    2)
         for i in 1 2 3 4; do swaymsg "workspace $i output ${EXTERNALS[0]}"; done
         for i in 5 6 7 8 9; do swaymsg "workspace $i output ${EXTERNALS[1]}"; done
         swaymsg "output $INTERNAL disable"
