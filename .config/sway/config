@@ -19,6 +19,13 @@ font pango:JetBrainsMono Nerd Font 10
 #   Example: output HDMI-A-1 mode 1920x1080@60Hz pos 0 0
 #            output eDP-1    mode 2560x1440@60Hz pos 1920 0
 
+# HDR — needs the Vulkan renderer; the session launches with WLR_RENDERER=vulkan
+# (see src/README.md → sway.desktop). render_bit_depth 10 avoids color banding.
+# HDR starts off and is toggled per-output at runtime (see the binding below);
+# enabling hdr implicitly forces render_bit_depth 10 on that output anyway.
+output * render_bit_depth 10
+output * hdr off
+
 ### Input ────────────────────────────────────────────────────────────────────
 input type:keyboard {
     repeat_delay 400
@@ -248,6 +255,11 @@ bindsym $mod+comma       focus output left
 bindsym $mod+period      focus output right
 bindsym $mod+Shift+comma  move container to output left
 bindsym $mod+Shift+period move container to output right
+
+## Display
+# Toggle HDR on the focused output ('output -' = current output, runtime only).
+# Needs the Vulkan renderer; enabling HDR implicitly forces render_bit_depth 10.
+bindsym $mod+F12 output - hdr toggle
 
 ## Resize mode
 mode "resize" {

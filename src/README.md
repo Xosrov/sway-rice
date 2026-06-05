@@ -150,6 +150,6 @@ cd ..
 echo "[Desktop Entry]
 Name=Sway
 Comment=An i3-compatible Wayland compositor
-Exec=sway
+Exec=env WLR_RENDERER=vulkan sway
 Type=Application" | sudo tee /usr/share/wayland-sessions/sway.desktop
 ```
