@@ -11,6 +11,7 @@
 !.config/swaylock
 !.config/fuzzel
 !.config/clipse
+!.config/mako
 
 !.config/copyq
 .config/copyq/*
