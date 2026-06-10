@@ -11,24 +11,22 @@ INTERNAL="eDP-1"
 mapfile -t EXTERNALS < <(
     swaymsg -t get_outputs |
     jq -r '.[] | select(.active == true and (.name | test("^eDP") | not)) | .name' |
-    # sort in reverse (change if monitors are in a different order) so that ext1 is the one on the right
-    sort -r
 )
 EXT_COUNT=${#EXTERNALS[@]}
 
 case $EXT_COUNT in
-    0)
-        for i in $(seq 1 9); do swaymsg "workspace $i output $INTERNAL"; done
-        swaymsg "output $INTERNAL enable"
+    2)
+        for i in 1 2 3 4; do swaymsg "workspace $i output ${EXTERNALS[0]}"; done
+        for i in 5 6 7 8 9; do swaymsg "workspace $i output ${EXTERNALS[1]}"; done
+        swaymsg "output $INTERNAL disable"
         ;;
     1)
         for i in 1 2 3 4; do swaymsg "workspace $i output $INTERNAL"; done
         for i in 5 6 7 8 9; do swaymsg "workspace $i output ${EXTERNALS[0]}"; done
         swaymsg "output $INTERNAL enable"
         ;;
-    2)
-        for i in 1 2 3 4; do swaymsg "workspace $i output ${EXTERNALS[0]}"; done
-        for i in 5 6 7 8 9; do swaymsg "workspace $i output ${EXTERNALS[1]}"; done
-        swaymsg "output $INTERNAL disable"
+    *)
+        for i in $(seq 1 9); do swaymsg "workspace $i output $INTERNAL"; done
+        swaymsg "output $INTERNAL enable"
         ;;
 esac

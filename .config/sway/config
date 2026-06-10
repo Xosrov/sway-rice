@@ -236,10 +236,9 @@ bindsym $mod+v          splitv
 bindsym $mod+s          layout stacking
 bindsym $mod+w          layout tabbed
 bindsym $mod+e          layout toggle split
-bindsym $mod+m          fullscreen
-bindsym $mod+Shift+m    fullscreen global
-bindsym $mod+Shift+space floating toggle
-bindsym $mod+space      focus mode_toggle
+bindsym $mod+space          fullscreen
+bindsym $mod+Shift+space    fullscreen global
+bindsym $mod+f          floating toggle
 bindsym $mod+a          focus parent
 
 ## Sticky — show on all workspaces (mirrors dwm's Mod+Shift+0 tag ~0)
