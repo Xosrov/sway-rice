@@ -261,8 +261,8 @@
             "default":    ["󰕿", "󰖀", "󰕾"]
         },
         "tooltip-format": "{desc}\nVolume: {volume}%",
+        "on-click-right": "~/.config/waybar/scripts/audio_picker.sh",
         "on-click":       "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-        "on-click-right": "pavucontrol-qt",
         "on-click-middle": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
         "on-scroll-up":   "pactl set-sink-volume @DEFAULT_SINK@ +5%",
         "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
