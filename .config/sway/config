@@ -280,10 +280,22 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 ### Bar ──────────────────────────────────────────────────────────────────────
-# Waybar replaces sway's built-in swaybar and is styled via its own style.css,
-# so no bar {} / colors block is needed. Launch it with a kill-guard so
-# `swaymsg reload` restarts the single instance instead of stacking a second
-# bar on top (the old swaybar_command approach spawned duplicates on reload).
+bar {
+    colors {
+    background         $base
+    statusline         $text
+    focused_statusline $text
+    focused_separator  $base
+
+    # target           border bg        text
+    focused_workspace  $base  $mauve    $crust
+    active_workspace   $base  $surface2 $text
+    inactive_workspace $base  $base     $text
+    urgent_workspace   $base  $red      $crust
+    }
+    swaybar_command waybar
+}
+
 exec_always pkill -x waybar; sleep 0.2; waybar
 
 ### System config ────────────────────────────────────────────────────────────
