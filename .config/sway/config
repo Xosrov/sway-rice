@@ -296,7 +296,9 @@ bar {
     swaybar_command waybar
 }
 
-exec_always pkill -x waybar; sleep 0.2; waybar
+### Keyring ──────────────────────────────────────────────────────────────────
+exec eval $(gnome-keyring-daemon --start)
+exec export SSH_AUTH_SOCK
 
 ### System config ────────────────────────────────────────────────────────────
 include @sysconfdir@/sway/config.d/*
