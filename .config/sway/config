@@ -58,9 +58,10 @@ exec swayidle -w \
 
 exec swaybg -i ~/wallpapers/wallpaper.jpg -m fill
 
-# Lid switch: smart close (clamshell-aware), re-evaluate outputs on open
+# Lid switch: smart close (clamshell-aware). On open, reset-displays.sh forces
+# the laptop panel back on, wakes all outputs, and re-applies the layout.
 bindswitch --locked lid:on  exec ~/.config/sway/scripts/lid-close.sh
-bindswitch --locked lid:off exec sh -c 'swaymsg "output * power on"; ~/.config/sway/scripts/output-manager.sh'
+bindswitch --locked lid:off exec ~/.config/sway/scripts/reset-displays.sh
 
 ### Appearance ───────────────────────────────────────────────────────────────
 default_border          pixel 2
@@ -92,10 +93,14 @@ exec ~/.config/sway/scripts/output-manager.sh
 exec ~/.config/sway/scripts/output-watcher.sh
 
 ### Workspace → output pinning ───────────────────────────────────────────────
-# Managed dynamically by output-manager.sh based on connected monitors:
-#   0 external → all workspaces on eDP-1
-#   1 external → 1-4 on eDP-1, 5-9 on external
-#   2 external → 1-4 on ext1, 5-9 on ext2, eDP-1 disabled (clamshell mode)
+# Managed dynamically by output-manager.sh based on the ACTIVE outputs.
+# eDP-1 is the laptop and is always the leftmost group when it is on.
+#   1 active output  → 1-9 on it
+#   2 active outputs → 1-4 on the left, 5-9 on the right
+#   3 active outputs → 1-3 / 4-6 / 7-9 across left→right (laptop + 2 externals)
+# Left/right is decided by physical X position. On lid-close with an external
+# present the laptop goes into clamshell (off); lid-open always brings it back.
+# Physically rearrange the monitors (like wdisplays) with $mod+Alt+comma/period.
 
 ### App → workspace assignment ───────────────────────────────────────────────
 # Syntax: assign [app_id="..."] → workspace <N>
@@ -261,6 +266,12 @@ bindsym $mod+Ctrl+period move workspace to output right
 # Toggle HDR on the focused output ('output -' = current output, runtime only).
 # Needs the Vulkan renderer; enabling HDR implicitly forces render_bit_depth 10.
 bindsym $mod+F12 output - hdr toggle
+
+# Re-apply outputs: force the laptop panel on and rebalance workspaces.
+bindsym $mod+Ctrl+r exec ~/.config/sway/scripts/reset-displays.sh
+# Physically move the focused monitor left/right in the layout (wraps around).
+bindsym $mod+Mod1+comma  exec ~/.config/sway/scripts/swap-displays.sh left
+bindsym $mod+Mod1+period exec ~/.config/sway/scripts/swap-displays.sh right
 
 ## Resize mode
 mode "resize" {
