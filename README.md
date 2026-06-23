@@ -21,6 +21,7 @@ sudo apt install \
     libpcre2-dev libpam0g-dev \
     libpulse-dev libwireplumber-0.5-dev libjack-jackd2-dev libsndio-dev \
     libpipewire-0.3-dev playerctl libmpdclient-dev libgps-dev \
+    pipewire pipewire-pulse wireplumber pavucontrol \
     libdbusmenu-gtk3-dev libupower-glib-dev libsystemd-dev libnl-3-dev \
     libnl-genl-3-dev libevdev-dev libfftw3-dev liburfkill-glib-dev \
     libfontconfig1-dev libpng-dev \
@@ -45,6 +46,7 @@ sudo zypper install \
     pcre2-devel pam-devel \
     libpulse-devel wireplumber-devel libjack-devel sndio-devel \
     pipewire-devel playerctl libmpdclient-devel gpsd-devel \
+    pipewire pipewire-pulseaudio wireplumber pavucontrol \
     libdbusmenu-gtk3-devel libupower-glib-devel systemd-devel \
     libnl3-devel libevdev-devel fftw3-devel liburfkill-glib-devel \
     fontconfig-devel libpng16-devel \
@@ -68,6 +70,7 @@ sudo pacman -S \
     mesa vulkan-icd-loader vulkan-headers glslang lcms2 \
     pcre2 pam \
     libpulse wireplumber jack2 sndio libpipewire playerctl libmpdclient gpsd \
+    pipewire pipewire-pulse pavucontrol \
     libdbusmenu-gtk3 upower libnl libevdev fftw \
     fontconfig libpng \
     sddm qt6-base qt6-declarative qt6-svg qt6-virtualkeyboard \
