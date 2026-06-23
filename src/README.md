@@ -63,6 +63,7 @@ cd ..
 cd clipse
 go mod tidy
 make wayland
+cd ..
 
 # Finally build Sway
 cd sway
