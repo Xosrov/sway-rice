@@ -12,7 +12,7 @@ bash setup.sh
 wlroots is a prerequisite, so you need it first
 ```bash
 cd wlroots
-meson setup build \
+meson setup build --buildtype=release  --reconfigure \
 	-Dc_args="-Wno-error" \
 	-Dcpp_args="-Wno-error" \
 	-Dwayland:tests=false \
@@ -25,37 +25,37 @@ cd ..
 
 # swaybg is optional but I'll use it
 cd swaybg
-meson setup build
+meson setup build --buildtype=release
 ninja -C build
 cd ..
 
 # waybar is optional but I'll use it
 cd waybar
-meson setup build -Dtests="disabled"
+meson setup build --buildtype=release  --reconfigure -Dtests="disabled"
 ninja -C build
 cd ..
 
 # fuzzel menu is my choice
 cd fuzzel
-meson setup build
+meson setup build --buildtype=release
 ninja -C build
 cd ..
 
 # lockscreen — --sysconfdir=/etc so the PAM file lands in /etc/pam.d/ on install
 cd swaylock
-meson setup build --sysconfdir=/etc
+meson setup build --buildtype=release  --reconfigure --sysconfdir=/etc
 ninja -C build
 cd ..
 
 # idle
 cd swayidle
-meson setup build
+meson setup build --buildtype=release
 ninja -C build
 cd ..
 
 # mako is my notification daemon
 cd mako
-meson setup build
+meson setup build --buildtype=release
 ninja -C build
 cd ..
 
@@ -66,7 +66,7 @@ make wayland
 
 # Finally build Sway
 cd sway
-meson setup build --force-fallback-for=libevdev,jsonc
+meson setup build --buildtype=release  --reconfigure --force-fallback-for=libevdev,jsonc
 ninja -C build
 cd ..
 

@@ -265,7 +265,7 @@ bindsym $mod+Ctrl+period move workspace to output right
 ## Display
 # Toggle HDR on the focused output ('output -' = current output, runtime only).
 # Needs the Vulkan renderer; enabling HDR implicitly forces render_bit_depth 10.
-bindsym $mod+F12 output - hdr toggle
+bindsym $mod+Mod1+h output - hdr toggle
 
 # Re-apply outputs: force the laptop panel on and rebalance workspaces.
 bindsym $mod+Ctrl+r exec ~/.config/sway/scripts/reset-displays.sh
