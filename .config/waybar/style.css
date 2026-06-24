@@ -3,7 +3,7 @@
 /* ── Global ─────────────────────────────────────────────────────────────── */
 * {
     font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", monospace;
-    font-size: 13px;
+    font-size: 12px;
     min-height: 0;
     border: none;
     border-radius: 0;
@@ -95,7 +95,7 @@ button:hover {
     color: @crust;
     border-radius: 8px;
     margin: 4px 4px;
-    padding: 0 12px;
+    padding: 0 8px;
     font-weight: bold;
     font-style: italic;
 }
@@ -106,7 +106,7 @@ button:hover {
     color: @subtext0;
     border-radius: 8px;
     margin: 4px 4px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 #scratchpad.empty {
@@ -120,7 +120,7 @@ button:hover {
     color: @green;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 #mpd.disconnected { color: @overlay0; }
@@ -133,8 +133,8 @@ button:hover {
     color: @teal;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
-    min-width: 80px;
+    padding: 0 8px;
+    min-width: 40px;
 }
 
 #mpris.playing { color: @teal; }
@@ -187,7 +187,7 @@ button:hover {
 #window {
     color: @subtext0;
     font-style: italic;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 
@@ -236,7 +236,7 @@ button:hover {
     color: @overlay1;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
     transition: all 0.2s ease;
 }
 
@@ -251,7 +251,7 @@ button:hover {
     color: @yellow;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 /* ── Pulseaudio ──────────────────────────────────────────────────────────── */
@@ -260,7 +260,7 @@ button:hover {
     color: @flamingo;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 #pulseaudio.muted     { color: @overlay0; }
@@ -274,7 +274,7 @@ button:hover {
     color: @blue;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 #bluetooth.disabled,
@@ -288,7 +288,7 @@ button:hover {
     color: @sky;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 #network.disconnected { color: @red; }
@@ -301,7 +301,7 @@ button:hover {
     color: @rosewater;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 /* ── CPU ─────────────────────────────────────────────────────────────────── */
@@ -310,7 +310,7 @@ button:hover {
     color: @sapphire;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 /* ── Memory ──────────────────────────────────────────────────────────────── */
@@ -319,7 +319,7 @@ button:hover {
     color: @lavender;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 /* ── Temperature ─────────────────────────────────────────────────────────── */
@@ -328,7 +328,7 @@ button:hover {
     color: @peach;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 #custom-temperature.critical {
@@ -351,7 +351,7 @@ button:hover {
     color: @teal;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 /* ── Power profiles daemon ───────────────────────────────────────────────── */
@@ -360,7 +360,7 @@ button:hover {
     color: @peach;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 #power-profiles-daemon.performance { color: @red;   }
@@ -401,7 +401,7 @@ button:hover {
     color: @green;
     border-radius: 8px;
     margin: 4px 2px;
-    padding: 0 12px;
+    padding: 0 8px;
 }
 
 #battery.good     { color: @green; }
