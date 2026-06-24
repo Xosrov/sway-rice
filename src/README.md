@@ -31,7 +31,7 @@ cd ..
 
 # waybar is optional but I'll use it
 cd waybar
-meson setup build --buildtype=release  --reconfigure -Dtests="disabled"
+meson setup build --buildtype=release -Drfkill=enabled -Dpipewire=enabled -Dcava=enabled -Dwireplumber=enabled --reconfigure -Dtests="disabled"
 ninja -C build
 cd ..
 
