@@ -14,5 +14,5 @@ if [ "$EXT_COUNT" -ge 1 ]; then
     swaymsg "output eDP-1 disable"
     bash "$SCRIPT_DIR/output-manager.sh"
 else
-    swaylock -f
+    bash "$SCRIPT_DIR/lock.sh"
 fi

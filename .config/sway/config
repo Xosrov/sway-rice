@@ -20,11 +20,11 @@ font pango:JetBrainsMono Nerd Font 10
 #            output eDP-1    mode 2560x1440@60Hz pos 1920 0
 
 # HDR — needs the Vulkan renderer; the session launches with WLR_RENDERER=vulkan
-# (see src/README.md → sway.desktop). render_bit_depth 10 avoids color banding.
-# HDR starts off and is toggled per-output at runtime (see the binding below);
-# enabling hdr implicitly forces render_bit_depth 10 on that output anyway.
+# (set by src/sway-session). render_bit_depth 10 avoids color banding.
+# HDR is off by default and toggled per-output at runtime (see the binding
+# below); enabling hdr implicitly forces render_bit_depth 10 on that output.
+# The `hdr` command needs sway >= 1.12 (Ubuntu 26.04 ships 1.11: no HDR there).
 output * render_bit_depth 10
-output * hdr off
 
 ### Input ────────────────────────────────────────────────────────────────────
 input type:keyboard {
@@ -41,6 +41,8 @@ input type:touchpad {
 }
 
 seat seat0 hide_cursor when-typing enable
+# Same cursor as GTK (gsettings cursor-theme) everywhere, incl. XWayland apps.
+seat seat0 xcursor_theme Adwaita 24
 
 ## Touchpad gestures
 bindgesture swipe:3:right workspace prev
@@ -49,12 +51,17 @@ bindgesture swipe:4:up    move container to workspace next
 bindgesture swipe:4:down  move container to workspace prev
 
 ### Idle / lock ──────────────────────────────────────────────────────────────
-# swayidle: lock at 5 min, screen off at 10 min, lock before sleep
+# swayidle: lock at 5 min, screen off at 10 min, lock before sleep.
+# lock.sh starts swaylock only if it isn't already running (these triggers
+# overlap, e.g. idle-lock then suspend). `lock` handles `loginctl lock-session`;
+# after-resume wakes outputs that were powered off when the machine slept.
 exec swayidle -w \
-    timeout 300  'swaylock -f' \
+    timeout 300  '~/.config/sway/scripts/lock.sh' \
     timeout 600  'swaymsg "output * power off"' \
     resume       'swaymsg "output * power on"'  \
-    before-sleep 'swaylock -f'
+    before-sleep '~/.config/sway/scripts/lock.sh' \
+    after-resume 'swaymsg "output * power on"'  \
+    lock         '~/.config/sway/scripts/lock.sh'
 
 exec swaybg -i ~/wallpapers/wallpaper.jpg -m fill
 
@@ -82,14 +89,19 @@ client.urgent            $peach    $base $peach $overlay0  $peach
 client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
 client.background        $base
 
-# Default opacity for all new windows (daemon overrides on focus events)
+# Default opacity for all new windows (adjust per window with $mod+Shift+a/s/z/x)
 for_window [all] opacity 0.95
+# ...but keep video players fully opaque
+for_window [app_id="mpv"] opacity 1
+for_window [app_id="vlc"] opacity 1
 # Make Clipse floating, centered and large
 for_window [app_id="clipse"] floating enable, move position center, resize set 80ppt 80ppt
 
 ### Autostart ────────────────────────────────────────────────────────────────
 exec mako
 exec clipse -listen
+# Polkit agent: GUI password prompts (mounting in Nemo, NetworkManager, ...).
+exec command -v lxqt-policykit-agent >/dev/null && lxqt-policykit-agent
 # exec_always so a `reload` re-applies clamshell state (reload re-enables eDP-1).
 exec_always ~/.config/sway/scripts/reconcile-displays.sh
 exec ~/.config/sway/scripts/output-watcher.sh
@@ -144,7 +156,7 @@ bindsym $mod+Shift+Return exec $term
 bindsym $mod+Shift+c      kill
 bindsym $mod+p            exec $menu
 bindsym $mod+Shift+r      reload
-bindsym $mod+Shift+p      exec swaylock -f
+bindsym $mod+Shift+p      exec ~/.config/sway/scripts/lock.sh
 bindsym $mod+Shift+q      exec swaynag -t warning \
     -m 'Exit sway? This ends your Wayland session.' \
     -B 'Yes, exit' 'swaymsg exit'
@@ -153,10 +165,10 @@ bindsym --no-repeat Ctrl+Alt+h exec kitty --class clipse -e clipse
 # $mod+LMB drag = move floating window
 # $mod+RMB drag = resize floating window
 # Note: sway cannot auto-float a tiling window on drag-start (dwm limitation).
-#   Float a window first with $mod+MMB or $mod+Shift+r, then drag it freely.
+#   Float a window first with $mod+MMB or $mod+f, then drag it freely.
 floating_modifier $mod normal
 
-## Float toggle — mirrors dwm's Button2 (MMB) and Mod+Shift+r togglefloating
+## Float toggle — mirrors dwm's Button2 (MMB) togglefloating
 bindsym --whole-window $mod+button2 floating toggle
 
 ## Swap two tiling windows preserving their sizes (two-step: mark then swap)
@@ -172,9 +184,9 @@ bindsym $mod+Shift+s opacity minus 0.05
 bindsym $mod+Shift+z opacity plus  0.1
 bindsym $mod+Shift+x opacity minus 0.1
 
-## Screenshots (requires grim; region selection also requires slurp)
-bindsym      Print exec grim ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png
-bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png
+## Screenshots → ~/Pictures + clipboard (grim, slurp, wl-clipboard)
+bindsym      Print exec ~/.config/sway/scripts/screenshot.sh full
+bindsym $mod+Print exec ~/.config/sway/scripts/screenshot.sh region
 
 ## Audio (PipeWire / WirePlumber)
 bindsym --locked XF86AudioMute        exec wpctl set-mute   @DEFAULT_AUDIO_SINK@   toggle
@@ -293,25 +305,22 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 ### Bar ──────────────────────────────────────────────────────────────────────
-bar {
-    colors {
-    background         $base
-    statusline         $text
-    focused_statusline $text
-    focused_separator  $base
-
-    # target           border bg        text
-    focused_workspace  $base  $mauve    $crust
-    active_workspace   $base  $surface2 $text
-    inactive_workspace $base  $base     $text
-    urgent_workspace   $base  $red      $crust
-    }
-    swaybar_command waybar
-}
+# Waybar runs standalone (not via `bar { swaybar_command }`) so it is respawned
+# if it crashes — see scripts/waybar.sh. Colors live in ~/.config/waybar.
+exec ~/.config/sway/scripts/waybar.sh
+# On `reload`, make waybar re-read its config too.
+exec_always pkill -USR2 -x waybar
 
 ### Keyring ──────────────────────────────────────────────────────────────────
-exec eval $(gnome-keyring-daemon --start)
-exec export SSH_AUTH_SOCK
+# gnome-keyring (secrets) is started by PAM at login (gnome-keyring-pam), and
+# the SSH agent is gcr-ssh-agent.socket (systemd user unit). SSH_AUTH_SOCK is
+# exported by the session wrapper (src/sway-session) since sway's `exec` runs
+# each command in its own shell and can't set variables for other programs.
 
 ### System config ────────────────────────────────────────────────────────────
-include @sysconfdir@/sway/config.d/*
+# Export the session env to systemd/D-Bus so portals and D-Bus-activated apps
+# can reach sway. Upstream ships this as config.d/50-systemd-user.conf, but
+# openSUSE's sway-branding-upstream has no config.d, so it's inlined here.
+exec dbus-update-activation-environment --systemd \
+    WAYLAND_DISPLAY DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+include /etc/sway/config.d/*

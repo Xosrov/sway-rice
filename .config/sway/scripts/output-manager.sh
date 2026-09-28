@@ -27,6 +27,23 @@ LOCK_FILE="$STATE_DIR/sway-output-manager.lock"
 exec 9>"$LOCK_FILE"
 flock 9
 
+lid_closed() {
+	grep -qi closed /proc/acpi/button/lid/*/state 2>/dev/null
+}
+
+# Clamshell rule, enforced on every re-apply (not only on the lid:on switch
+# event): lid closed + an external active => laptop panel off. A dock/monitor
+# hotplug flap while clamshelled (externals vanish, eDP-1 gets enabled as the
+# fallback, externals return) would otherwise leave the panel lit under the
+# closed lid, since no new lid event ever fires.
+enforce_clamshell() {
+	lid_closed || return
+	local ext
+	ext=$(swaymsg -t get_outputs | jq --arg n "$INTERNAL" \
+		'[.[] | select(.active == true and .name != $n)] | length')
+	[ "${ext:-0}" -ge 1 ] && swaymsg "output $INTERNAL disable" >/dev/null
+}
+
 # Populate `order` (array of output names, left -> right logical order).
 compute_order() {
 	local outputs_json internal_active
@@ -85,10 +102,12 @@ compute_targets() {
 
 # Re-apply the whole layout: move every existing workspace to its target.
 apply_all() {
+	enforce_clamshell
 	compute_order
 	if [ ${#order[@]} -eq 0 ]; then
-		# Nothing is on — make sure the laptop comes back.
-		swaymsg "output $INTERNAL enable" >/dev/null
+		# Nothing is on — bring the laptop back, unless the lid is shut (then
+		# stay headless; lid:off -> reset-displays.sh re-enables it).
+		lid_closed || swaymsg "output $INTERNAL enable" >/dev/null
 		return
 	fi
 	compute_targets
