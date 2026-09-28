@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Waybar audio right-click: choose default sink or source via rofi (PipeWire / wpctl).
+# Waybar audio right-click: choose default sink or source via fuzzel (PipeWire / wpctl).
 # Setting the default node makes WirePlumber reroute existing streams automatically.
 
 declare -A choice_map
@@ -32,12 +32,12 @@ done < <(wpctl status | awk '
     }
 ')
 
-chosen=$(printf '%s\n' "${lines[@]}" | rofi -dmenu -p "󰎆 Audio" -no-custom \
-    -theme-str 'window {width: 650px;} listview {lines: 14;}')
+chosen=$(printf '%s\n' "${lines[@]}" | fuzzel --dmenu \
+    --prompt "󰎆 Audio > " --width 60 --lines 14)
 [[ -z "$chosen" ]] && exit 0
 
 target="${choice_map[$chosen]}"
-[[ -z "$target" ]] && exit 0  # separator line
+[[ -z "$target" ]] && exit 0  # separator line or typed-in text
 
 type="${target%%:*}"
 id="${target#*:}"

@@ -114,19 +114,6 @@ button:hover {
     color: transparent;
 }
 
-/* ── MPD ─────────────────────────────────────────────────────────────────── */
-#mpd {
-    background: @surface0;
-    color: @green;
-    border-radius: 8px;
-    margin: 4px 2px;
-    padding: 0 8px;
-}
-
-#mpd.disconnected { color: @overlay0; }
-#mpd.stopped      { color: @overlay1; }
-#mpd.paused       { color: @subtext0; }
-
 /* ── MPRIS (native) ──────────────────────────────────────────────────────── */
 #mpris {
     background: @surface0;
@@ -353,19 +340,6 @@ button:hover {
     margin: 4px 2px;
     padding: 0 8px;
 }
-
-/* ── Power profiles daemon ───────────────────────────────────────────────── */
-#power-profiles-daemon {
-    background: @surface0;
-    color: @peach;
-    border-radius: 8px;
-    margin: 4px 2px;
-    padding: 0 8px;
-}
-
-#power-profiles-daemon.performance { color: @red;   }
-#power-profiles-daemon.balanced    { color: @blue;  }
-#power-profiles-daemon.power-saver { color: @green; }
 
 /* ── Keyboard state ──────────────────────────────────────────────────────── */
 #keyboard-state {

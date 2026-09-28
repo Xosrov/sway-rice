@@ -33,3 +33,8 @@ indicator-radius=80
 indicator-thickness=8
 show-failed-attempts
 line-uses-ring
+
+# Stray Enter presses don't count as failed PAM attempts (no faillock lockout)
+ignore-empty-password
+# The caps-lock colors above only take effect with this enabled
+indicator-caps-lock
