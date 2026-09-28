@@ -1,0 +1,19 @@
+#!/bin/sh
+# Login entry point for the "Sway" session (installed to /usr/local/bin and
+# referenced by sway.desktop). Sets session-wide environment that sway's own
+# config can't: `exec` in the sway config runs in a throwaway shell.
+
+# Vulkan renderer, needed for HDR (`output ... hdr on`). Override with e.g.
+# WLR_RENDERER=gles2 if it misbehaves after a driver update.
+export WLR_RENDERER="${WLR_RENDERER:-vulkan}"
+
+# SSH agent from gcr (gcr-ssh-agent.socket, systemd user unit).
+if [ -z "$SSH_AUTH_SOCK" ] && [ -S "$XDG_RUNTIME_DIR/gcr/ssh" ]; then
+	export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gcr/ssh"
+fi
+
+# Java/AWT apps (Android Studio, JetBrains IDEs) render blank windows on
+# non-reparenting window managers without this.
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+exec sway "$@"

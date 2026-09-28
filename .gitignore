@@ -21,4 +21,5 @@ src/*
 
 !src/README.md
 !src/setup.sh
-!src/patches/
+!src/sway-session
+!src/sway.desktop

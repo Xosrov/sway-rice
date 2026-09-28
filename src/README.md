@@ -1,74 +1,31 @@
 # src files for rice
 
+Sway and its companions come from the distro packages (see the main
+[README](../README.md)). This directory only holds what distros don't ship:
+
+| Item                   | What                                                               |
+|------------------------|--------------------------------------------------------------------|
+| `sway-session`         | session wrapper: `WLR_RENDERER=vulkan` (HDR), SSH agent, Java fix  |
+| `sway.desktop`         | SDDM session entry that runs `sway-session`                        |
+| `clipse`               | clipboard manager (built from source; on Arch use the AUR package) |
+| `catppuccin-gtk`       | GTK theme                                                          |
+| `xapp-symbolic-icons`  | `xsi-*` icons Nemo >= 6.6 needs for its toolbar/sidebar            |
+| `sddm-astronaut-theme` | login screen theme                                                 |
+
 ## Initial Setup
 
-Run the setup script to pull dependencies and set up for building
+Clone the sources:
 ```bash
 bash setup.sh
 ```
 
-## Build Sway (manual install)
+## Build
 
-wlroots is a prerequisite, so you need it first
 ```bash
-cd wlroots
-meson setup build --buildtype=release  --reconfigure \
-	-Dc_args="-Wno-error" \
-	-Dcpp_args="-Wno-error" \
-	-Dwayland:tests=false \
-	-Dwayland-protocols:tests=false \
-	-Dlibdrm:tests=false \
-	-Dv4l-utils:doxygen-doc=disabled \
-	--wrap-mode=forcefallback
-ninja -C build
-cd ..
-
-# swaybg is optional but I'll use it
-cd swaybg
-meson setup build --buildtype=release
-ninja -C build
-cd ..
-
-# waybar is optional but I'll use it
-cd waybar
-meson setup build --buildtype=release -Drfkill=enabled -Dpipewire=enabled -Dcava=enabled -Dwireplumber=enabled --reconfigure -Dtests="disabled"
-ninja -C build
-cd ..
-
-# fuzzel menu is my choice
-cd fuzzel
-meson setup build --buildtype=release
-ninja -C build
-cd ..
-
-# lockscreen — --sysconfdir=/etc so the PAM file lands in /etc/pam.d/ on install
-cd swaylock
-meson setup build --buildtype=release  --reconfigure --sysconfdir=/etc
-ninja -C build
-cd ..
-
-# idle
-cd swayidle
-meson setup build --buildtype=release
-ninja -C build
-cd ..
-
-# mako is my notification daemon
-cd mako
-meson setup build --buildtype=release
-ninja -C build
-cd ..
-
 # clipse is my clipboard manager
 cd clipse
 go mod tidy
 make wayland
-cd ..
-
-# Finally build Sway
-cd sway
-meson setup build --buildtype=release  --reconfigure --force-fallback-for=libevdev,jsonc
-ninja -C build
 cd ..
 
 # display manager theme
@@ -85,18 +42,14 @@ sed "s|^ConfigFile=.*|ConfigFile=pixel_sakura_custom.conf|" metadata.desktop > s
 # copy font it needs
 mkdir -p sddm-astronaut-theme-custom/Fonts
 cp Fonts/ARCADECLASSIC.TTF sddm-astronaut-theme-custom/Fonts/
+cd ..
 ```
 
 ## Debugging
 
-Sway
+Sway (nested, in a window, with the repo's configs)
 ```bash
-GDK_BACKEND=wayland \
-XDG_CONFIG_HOME=$PWD/../.config \
-WAYLAND_DISPLAY=wayland-1 \
-LD_LIBRARY_PATH=$PWD/wlroots/build:$LD_LIBRARY_PATH \
-PATH=$PWD/sway/build/sway:$PWD/sway/build/swaybar:$PWD/sway/build/swaymsg:$PWD/sway/build/swaynag:$PWD/swaybg/build:$PWD/waybar/build:$PWD/fuzzel/build:$PWD/swaylock/build:$PWD/mako/build:$PATH \
-sway
+XDG_CONFIG_HOME=$PWD/../.config WLR_BACKENDS=wayland sway
 ```
 
 sddm
@@ -107,35 +60,23 @@ sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/sddm-astronaut-theme
 ## System Install
 
 ```bash
-cd wlroots
-sudo ninja -C build install
-cd ../
-cd swaybg
-sudo ninja -C build install
-cd ../
-cd waybar
-sudo ninja -C build install
-cd ../
-cd swaylock
-sudo ninja -C build install
-cd ../
-cd swayidle
-sudo ninja -C build install
-cd ../
-cd mako
-sudo ninja -C build install
-cd ../
-cd fuzzel
-sudo ninja -C build install
-cd ../
-cd sway
-sudo ninja -C build install
-cd ..
+# Session: same file name as the package's sway.desktop, so SDDM shows a single
+# "Sway" entry and the /usr/local one (our wrapper) wins
+sudo install -Dm755 sway-session /usr/local/bin/sway-session
+sudo install -Dm644 sway.desktop /usr/local/share/wayland-sessions/sway.desktop
+
 cd clipse
 sudo install -m 755 clipse /usr/local/bin
 cd ..
+
 cd catppuccin-gtk
 python3 install.py macchiato yellow
+cd ..
+
+# XApp symbolic icons — per-user install, no root needed
+cd xapp-symbolic-icons
+meson setup build --prefix="$HOME/.local" && ninja -C build install
+gtk-update-icon-cache -f -t ~/.local/share/icons/hicolor
 cd ..
 
 # Theme
@@ -143,14 +84,9 @@ cd sddm-astronaut-theme
 sudo cp -r sddm-astronaut-theme-custom/Fonts/* /usr/share/fonts/
 echo "[Theme]
 Current=sddm-astronaut-theme-custom" | sudo tee /etc/sddm.conf
+sudo mkdir -p /etc/sddm.conf.d
 echo "[General]
 InputMethod=qtvirtualkeyboard" | sudo tee /etc/sddm.conf.d/virtualkbd.conf
 sudo cp -r sddm-astronaut-theme-custom /usr/share/sddm/themes/
 cd ..
-# create sway.desktop file at /usr/share/wayland-sessions/
-echo "[Desktop Entry]
-Name=Sway
-Comment=An i3-compatible Wayland compositor
-Exec=env WLR_RENDERER=vulkan sway
-Type=Application" | sudo tee /usr/share/wayland-sessions/sway.desktop
 ```

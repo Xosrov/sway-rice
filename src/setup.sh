@@ -1,40 +1,13 @@
 #!/bin/bash
+# Fetch the parts of the rice that openSUSE doesn't package. Everything else
+# (sway, waybar, swaylock, ...) comes from zypper — see packages.txt.
 
-SWAY_VERSION=v1.12
-SWAYBG_VERSION=v1.2.2
-SWAYLOCK_VERSION=v1.8.5
-SWAYIDLE_VERSION=v1.9.0
-WAYBAR_REVISION=05945748
-MAKO_VERSION=v1.11.0
-WLROOTS_VERSION=0.20
-FUZZEL_VERSION=1.14.1
+CLIPSE_VERSION=v1.2.1
 CATPPUCCIN_GTK_VERSION=v1.0.3
 SDDM_ASTRO_THEME_REVISION=8c85b9c
-CLIPSE_VERSION=v1.2.1
+XSI_ICONS_REVISION=2c91ca1
 
-# clone main projects
-git clone --branch $SWAY_VERSION https://github.com/swaywm/sway.git sway
-git clone --branch $SWAYBG_VERSION https://github.com/swaywm/swaybg.git swaybg
-git clone --branch $SWAYLOCK_VERSION https://github.com/swaywm/swaylock.git swaylock
-git clone --branch $SWAYIDLE_VERSION https://github.com/swaywm/swayidle.git swayidle
-git clone --branch $MAKO_VERSION https://github.com/emersion/mako.git mako
-git clone --branch $WLROOTS_VERSION https://gitlab.freedesktop.org/wlroots/wlroots.git wlroots
-git clone --branch $FUZZEL_VERSION https://codeberg.org/dnkl/fuzzel.git fuzzel
-git clone --branch $CATPPUCCIN_GTK_VERSION https://github.com/catppuccin/gtk.git catppuccin-gtk
 git clone --branch $CLIPSE_VERSION https://github.com/savedra1/clipse.git clipse
-git clone https://github.com/Alexays/Waybar.git waybar && cd waybar && git checkout $WAYBAR_REVISION && cd .. 
+git clone --branch $CATPPUCCIN_GTK_VERSION https://github.com/catppuccin/gtk.git catppuccin-gtk
+git clone https://github.com/xapp-project/xapp-symbolic-icons.git xapp-symbolic-icons && cd xapp-symbolic-icons && git checkout $XSI_ICONS_REVISION && cd ..
 git clone https://github.com/Keyitdev/sddm-astronaut-theme.git sddm-astronaut-theme && cd sddm-astronaut-theme && git checkout $SDDM_ASTRO_THEME_REVISION && cd ../
-
-LIBEVDEV_VERSION=libevdev-1.13.6
-JSONC_VERSION=master
-
-cd sway
-git apply < ../patches/sway-v1.12.patch
-git clone --branch $LIBEVDEV_VERSION https://gitlab.freedesktop.org/libevdev/libevdev.git subprojects/libevdev
-git clone --branch $JSONC_VERSION https://github.com/json-c/json-c.git subprojects/json-c
-ln -r -s ../wlroots/ subprojects/wlroots
-cd ../
-
-cd wlroots
-git apply ../patches/wlroots-0.20.patch
-cd ../
