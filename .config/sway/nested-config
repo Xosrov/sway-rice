@@ -1,0 +1,13 @@
+# Minimal desktop for one app. A tiled window fills the nested output; app
+# fullscreen stays inside that output as the outer floating window resizes.
+# Deliberately do not include the desktop config or system environment exports.
+default_border none
+default_floating_border none
+gaps inner 0
+gaps outer 0
+focus_follows_mouse no
+seat seat0 xcursor_theme Adwaita 24
+
+# The outer compositor handles Super shortcuts, including move/resize/close.
+# No bar, wallpaper, idle daemon, or session-wide D-Bus/systemd environment edits.
+exec bash "$SWAY_NESTED_STARTUP"

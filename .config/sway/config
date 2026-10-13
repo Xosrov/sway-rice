@@ -96,6 +96,8 @@ for_window [app_id="mpv"] opacity 1
 for_window [app_id="vlc"] opacity 1
 # Make Clipse floating, centered and large
 for_window [app_id="clipse"] floating enable, move position center, resize set 80ppt 80ppt
+# Nested compositors (Super+Ctrl+p): resize/move the outer window normally.
+for_window [app_id="^wlroots$"] floating enable, resize set 80ppt 80ppt, move position center, opacity 1
 
 ### Autostart ────────────────────────────────────────────────────────────────
 exec mako
@@ -155,6 +157,7 @@ for_window [class="Steam"]                 inhibit_idle visible
 bindsym $mod+Shift+Return exec $term
 bindsym $mod+Shift+c      kill
 bindsym $mod+p            exec $menu
+bindsym $mod+Ctrl+p       exec ~/.config/sway/scripts/nested-app.sh
 bindsym $mod+Shift+r      reload
 bindsym $mod+Shift+p      exec ~/.config/sway/scripts/lock.sh
 bindsym $mod+Shift+q      exec swaynag -t warning \
